@@ -32,4 +32,4 @@ jobs:
 #    - name: show images
 #      run: docker images
     - name: echo name
-      run: echo $name
+      run: echo ${{ github.event.inputs.name }}
