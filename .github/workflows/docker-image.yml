@@ -1,24 +1,27 @@
 name: Docker Image CI
 
 on:
-  workflow_dispatch:
-    inputs:
-      name:
-        type: choice
-        description: Who to greet
-        options: 
-        - monalisa
-        - cschleiden
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+inputs:
+  semver_level:
+    type: choice
+    description: semver levek
+    options:
+    - major
+    - minor
+    - patch
+    default: patch
 
 env:
   DOCKER_REPO_NAME: shaylevin89perimeter
   DOCKER_IMAGE_NAME: k-train
   DOCKERHUB_USER: shaylevin89perimeter
   DOCKERHUB_PASSWD: ${{ secrets.DOCKERHUB_PASSWD }}
+  MAKE_LATEST: true
   ENVIRONMENT: dev
   
 jobs:
@@ -27,13 +30,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
-    - name: show images
-      run: docker images
-    - name: docker login
-      run: echo $DOCKERHUB_PASSWD | docker login -u $DOCKERHUB_USER --password-stdin
-    - name: docker push
-      run: docker push $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
+#    - name: Build the Docker image
+#      run: docker build . --file Dockerfile --tag $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
+#    - name: show images
+#      run: docker images
+#    - name: docker login
+#      run: echo $DOCKERHUB_PASSWD | docker login -u $DOCKERHUB_USER --password-stdin
+#    - name: docker push
+#      run: docker push $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
     - name: echo name
-      run: echo ${{ github.event.inputs.name }}
+      run: echo ${{ github.event.inputs.semver_level }}
