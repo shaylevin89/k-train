@@ -49,9 +49,6 @@ jobs:
           echo "SEMVER_LEVEL=$SEMVER_LEVEL" >> $GITHUB_ENV
         fi
     - name: get dockerhub token
-      run: |
-      export TOKEN=$(curl -s -H "Content-Type: application/json" \
-        -X POST -d '{"username": "'${DOCKERHUB_USER}'", "password": "'${DOCKERHUB_PASSWD}'"}' \
-                                   https://hub.docker.com/v2/users/login/ | jq -r .token)
+      run: .github/scripts/get_last_tag.sh
     - name: get latest version
       run: echo $TOKEN
