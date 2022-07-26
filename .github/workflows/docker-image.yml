@@ -28,12 +28,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag shaylevin89perimeter:v1.0.1
+      run: docker build . --file Dockerfile --tag $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
     - name: show images
       run: docker images
     - name: docker login
       run: echo $DOCKERHUB_PASSWD | docker login -u $DOCKERHUB_USER --password-stdin
     - name: docker push
-      run: docker push shaylevin89perimeter:v1.0.1
+      run: docker push $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
     - name: echo name
       run: echo ${{ github.event.inputs.name }}
