@@ -40,7 +40,11 @@ jobs:
 #    - name: docker push
 #      run: docker push $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
     - name: echo semver level
-      run: echo ${{ github.event.inputs.semver_level }}
+      if: "${{ github.event.inputs.semver_level != '' }}"
+      run: echo "SEMVER_LEVEL=${{ github.event.inputs.semver_level }}" >> $GITHUB_ENV
+    - name: echo semver level
+      if: "${{ github.event.inputs.semver_level == '' }}"
+      run: echo "SEMVER_LEVEL=$SEMVER_LEVEL" >> $GITHUB_ENV
     - name: get dockerhub token
       run: .github/scripts/get_last_tag.sh
     - name: get latest version
