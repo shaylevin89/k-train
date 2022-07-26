@@ -18,6 +18,7 @@ env:
   DOCKER_REPO_NAME: shaylevin89perimeter
   DOCKER_IMAGE_NAME: k-train
   DOCKERHUB_USER: shaylevin89perimeter
+  DOCKERHUB_PASSWD: ${{ secrets.DOCKERHUB_PASSWD }}
   ENVIRONMENT: dev
   
 jobs:
@@ -30,6 +31,8 @@ jobs:
       run: docker build . --file Dockerfile --tag shaylevin89perimeter:v1.0.1
     - name: show images
       run: docker images
+    - name: docker login
+      run: echo $DOCKERHUB_PASSWD | docker login -u $DOCKERHUB_USER --password-stdin
     - name: docker push
       run: docker push shaylevin89perimeter:v1.0.1
     - name: echo name
