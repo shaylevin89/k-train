@@ -26,10 +26,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-#    - uses: actions/checkout@v3
-#    - name: Build the Docker image
-#      run: docker build . --file Dockerfile --tag test
-#    - name: show images
-#      run: docker images
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag test
+    - name: show images
+      run: docker images
     - name: echo name
       run: echo ${{ github.event.inputs.name }}
