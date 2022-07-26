@@ -50,4 +50,4 @@ jobs:
     - name: get latest version
       run: echo $TOKEN
     - name: try py
-      runs: python3 .github/scripts/try.py
+      run: python3 .github/scripts/try.py
