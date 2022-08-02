@@ -31,23 +31,23 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-#    - name: Build the Docker image
-#      run: docker build . --file Dockerfile --tag $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
-#    - name: show images
-#      run: docker images
-#    - name: docker login
-#      run: echo $DOCKERHUB_PASSWD | docker login -u $DOCKERHUB_USER --password-stdin
-#    - name: docker push
-#      run: docker push $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:v1.0.1
     - name: echo semver level
       if: "${{ github.event.inputs.semver_level != '' }}"
       run: echo "SEMVER_LEVEL=${{ github.event.inputs.semver_level }}" >> $GITHUB_ENV
     - name: echo semver level
       if: "${{ github.event.inputs.semver_level == '' }}"
       run: echo "SEMVER_LEVEL=$SEMVER_LEVEL" >> $GITHUB_ENV
-    - name: get dockerhub token
-      run: .github/scripts/get_last_tag.sh
-    - name: get latest version
-      run: echo $TOKEN
-    - name: try py
+    - name: update docker image py
       run: python3 .github/scripts/try.py
+    - name: echo DOCKER_TAG
+      run: echo $DOCKER_TAG
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+    - name: docker login
+      run: echo $DOCKERHUB_PASSWD | docker login -u $DOCKERHUB_USER --password-stdin
+    - name: docker push
+      run: docker push $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+    - name: docker tag
+      run: docker tag $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:latest
+    - name: docker push latest
+      run: docker push $DOCKER_REPO_NAME/$DOCKER_IMAGE_NAME:latest
